@@ -8,12 +8,11 @@ export interface PublicBioResult {
   links: ILink[];
 }
 
-// TODO: maybe auto-create on signup instead of lazily here
 export class BioService {
   static async getProfileByUserId(userId: string): Promise<IBioProfile> {
     let profile = await BioProfile.findOne({ userId });
     if (!profile) {
-      // first time hitting the bio page — spin up a default
+      // Create fallback profile if missing
       profile = await BioProfile.create({
         userId,
         username: `user_${userId.slice(-6)}`,
@@ -38,7 +37,7 @@ export class BioService {
     if (input.theme !== undefined) profile.theme = input.theme;
     if (input.socialLinks !== undefined) profile.socialLinks = input.socialLinks;
     if (input.showcaseLinkIds !== undefined) {
-      // make sure they can't pin other people's links
+      // Validate that showcase links strictly belong to this authenticated user
       const validLinks = await Link.find({
         _id: { $in: input.showcaseLinkIds },
         userId,
@@ -69,7 +68,7 @@ export class BioService {
 
     let links: ILink[] = [];
 
-    // if they've curated links, use those; otherwise fall back to their top 10
+    // If showcase links are selected, retrieve those; otherwise retrieve user's top active links
     if (profile.showcaseLinkIds && profile.showcaseLinkIds.length > 0) {
       links = await Link.find({
         _id: { $in: profile.showcaseLinkIds },

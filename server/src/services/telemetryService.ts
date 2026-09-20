@@ -10,7 +10,10 @@ export interface ClickMetadata {
 }
 
 export class TelemetryService {
-  // fire-and-forget after the 302 goes out
+  /**
+   * Logs a click event asynchronously and increments the link click count.
+   * This is executed as a non-blocking operation following a 302 redirect.
+   */
   static async recordClick(linkId: string, metadata: ClickMetadata): Promise<void> {
     try {
       const ipHash = hashIpAddress(metadata.ip || '127.0.0.1');
@@ -37,7 +40,7 @@ export class TelemetryService {
         Link.findByIdAndUpdate(linkId, { $inc: { clickCount: 1 } })
       ]);
     } catch (error) {
-      console.error('[telemetry] click recording failed:', error);
+      console.error('[TelemetryService] Error recording click telemetry:', error);
     }
   }
 }

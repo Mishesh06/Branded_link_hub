@@ -23,14 +23,9 @@ yarn-error.log*
 
 # OS & Editor
 .DS_Store
-Thumbs.db
 .idea/
 .vscode/
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
-
-# local scratch
-notes.md
-scratch/

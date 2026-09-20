@@ -32,7 +32,7 @@ export class LinkService {
       shortCode = slugCandidate;
       isCustomSlug = true;
     } else {
-      // retry up to 5 times on collision (very rare)
+      // Generate 6-char random code with retry on collision
       let candidate = generateShortCode(6);
       let attempts = 0;
       while ((await Link.findOne({ shortCode: candidate })) && attempts < 5) {
@@ -49,7 +49,7 @@ export class LinkService {
       );
     }
 
-    // fall back to hostname if no title given
+    // Default title from hostname if empty
     let title = input.title?.trim();
     if (!title) {
       try {
@@ -128,10 +128,10 @@ export class LinkService {
       throw new AppError('Link not found or unauthorized access.', 404);
     }
 
-    // clean up clicks too
+    // Clean up associated telemetry records asynchronously
     await ClickEvent.deleteMany({ linkId: link._id });
 
-    // remove from bio showcase if it was pinned there
+    // Clean up showcase reference in BioProfile if referenced
     await BioProfile.updateOne(
       { userId },
       { $pull: { showcaseLinkIds: link._id } }
