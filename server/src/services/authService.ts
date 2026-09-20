@@ -48,7 +48,7 @@ export class AuthService {
 
     await user.save();
 
-    // Create default BioProfile with a unique username handle
+    // auto-gen a username from their name
     let baseUsername = input.name
       .toLowerCase()
       .replace(/[^a-z0-9]/g, '')
@@ -124,7 +124,7 @@ export class AuthService {
     const refreshToken = generateRefreshToken(user._id.toString());
     const hashedRefresh = hashToken(refreshToken);
 
-    // Keep only the most recent 5 refresh tokens to prevent unbounded array growth
+    // cap at 5 active sessions, drop oldest
     const activeTokens = user.refreshTokenHashes || [];
     user.refreshTokenHashes = [...activeTokens.slice(-4), hashedRefresh];
     await user.save();
@@ -158,9 +158,7 @@ export class AuthService {
     const oldHash = hashToken(oldRefreshToken);
     const tokenIndex = user.refreshTokenHashes.indexOf(oldHash);
 
-    // Reuse detection
-    if (tokenIndex === -1) {
-      // Possible stolen token reuse: invalidate all active sessions for this user
+    // reuse detected — nuke all sessions for this user
       user.refreshTokenHashes = [];
       await user.save();
       throw new AppError(
@@ -169,7 +167,7 @@ export class AuthService {
       );
     }
 
-    // Token rotation: remove old token and issue fresh pair
+    // rotate: drop old, issue fresh pair
     user.refreshTokenHashes.splice(tokenIndex, 1);
 
     const accessToken = generateAccessToken(user._id.toString());
@@ -207,7 +205,7 @@ export class AuthService {
     );
 
     if (!user) {
-      // Return success anyway to prevent user enumeration
+      // don't leak whether the email exists
       return {};
     }
 
@@ -234,7 +232,7 @@ export class AuthService {
     user.passwordHash = await bcrypt.hash(input.newPassword, salt);
     user.passwordResetToken = null;
     user.passwordResetExpires = null;
-    user.refreshTokenHashes = []; // Invalidate all prior sessions on password reset
+    user.refreshTokenHashes = []; // log everyone out on pw reset
     await user.save();
   }
 }

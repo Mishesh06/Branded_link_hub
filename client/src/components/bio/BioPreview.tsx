@@ -106,7 +106,7 @@ export const BioPreview: React.FC<BioPreviewProps> = ({ profile, links }) => {
         <div
           className={`w-full min-h-[540px] max-h-[580px] overflow-y-auto rounded-[2rem] p-5 pt-8 flex flex-col items-center text-center transition-all duration-300 ${styles.container} ${styles.wrapperClass}`}
         >
-          {/* Avatar */}
+          {/* avatar */}
           <Avatar className="h-20 w-20 border-2 border-border/80 shadow-md mb-3">
             <AvatarImage src={profile.avatarUrl || ''} alt={profile.displayName} />
             <AvatarFallback className="text-base font-bold">
@@ -114,7 +114,7 @@ export const BioPreview: React.FC<BioPreviewProps> = ({ profile, links }) => {
             </AvatarFallback>
           </Avatar>
 
-          {/* Display Name */}
+          {/* name + handle */}
           <h2 className="text-base font-bold tracking-tight">
             {profile.displayName || 'Your Name'}
           </h2>
@@ -126,12 +126,12 @@ export const BioPreview: React.FC<BioPreviewProps> = ({ profile, links }) => {
             </span>
           )}
 
-          {/* Bio text */}
+          {/* bio */}
           <p className={`text-xs mt-2.5 max-w-[240px] leading-relaxed ${styles.textMuted}`}>
             {profile.bio || 'Your bio will appear here. Add a short bio to introduce yourself.'}
           </p>
 
-          {/* Social Links Icons Bar */}
+          {/* social icons */}
           {activeSocials.length > 0 && (
             <div className="flex flex-wrap items-center justify-center gap-1.5 mt-4">
               {activeSocials.map((soc, i) => (
@@ -149,7 +149,7 @@ export const BioPreview: React.FC<BioPreviewProps> = ({ profile, links }) => {
             </div>
           )}
 
-          {/* Links List */}
+          {/* links */}
           <div className="w-full space-y-2 mt-5">
             {links.length === 0 ? (
               <div className={`p-4 rounded-xl border border-dashed text-xs ${styles.textMuted}`}>
@@ -171,7 +171,7 @@ export const BioPreview: React.FC<BioPreviewProps> = ({ profile, links }) => {
             )}
           </div>
 
-          {/* Powered by footer */}
+          {/* footer */}
           <div className="mt-auto pt-6">
             <span className={`text-[10px] uppercase tracking-widest font-mono opacity-50 block`}>
               Branded Link Hub
