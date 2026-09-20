@@ -1,4 +1,4 @@
-# Branded Short-Link & Bio-Link Hub (Project 04)
+# Branded Short-Link & Bio-Link Hub
 
 > A high-performance URL shortening engine with custom vanity slugs and real-time click telemetry analytics, alongside a customizable "Link-in-Bio" creator hub manager. Built strictly according to the Project 04 MERN Stack Evaluation Specification.
 
