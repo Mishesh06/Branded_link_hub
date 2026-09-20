@@ -80,7 +80,7 @@ export interface SocialLink {
   isEnabled: boolean;
 }
 
-export type BioTheme = 'minimal-light' | 'dark-slate' | 'gradient';
+export type BioTheme = 'minimal-light' | 'dark-slate' | 'gradient' | 'midnight-aurora' | 'paper-studio';
 
 export interface BioProfile {
   _id: string;

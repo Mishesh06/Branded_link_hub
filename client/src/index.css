@@ -60,7 +60,64 @@
   }
 }
 
-/* Ambient Background Lighting (Subtle 28s / 36s / 42s slow drift - Neutral Graphite/White) */
+/* ============================================================
+   Bio Theme Backgrounds
+   ============================================================ */
+
+/* --- Midnight Aurora Theme --- */
+@keyframes auroraShift {
+  0%, 100% {
+    opacity: 0.6;
+    transform: scale(1) translate(0, 0);
+  }
+  33% {
+    opacity: 0.85;
+    transform: scale(1.04) translate(-1.5%, 1%);
+  }
+  66% {
+    opacity: 0.65;
+    transform: scale(1.02) translate(1%, -1%);
+  }
+}
+
+.bio-aurora-bg {
+  position: relative;
+  background: #05070A;
+}
+
+.bio-aurora-bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 70% 45% at 30% 15%, rgba(20, 95, 100, 0.28) 0%, transparent 65%),
+    radial-gradient(ellipse 55% 40% at 75% 80%, rgba(30, 50, 110, 0.22) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 30% at 60% 40%, rgba(25, 70, 80, 0.12) 0%, transparent 55%);
+  animation: auroraShift 25s ease-in-out infinite;
+  will-change: opacity, transform;
+  pointer-events: none;
+  z-index: 0;
+  border-radius: inherit;
+}
+
+.bio-aurora-container {
+  position: relative;
+  z-index: 1;
+  background: transparent;
+}
+
+/* --- Paper Studio Theme --- */
+.bio-paper-bg {
+  background: #F5F1E8;
+}
+
+.bio-paper-container {
+  background: #F5F1E8;
+}
+
+/* ============================================================
+   Ambient Background Lighting (Subtle 28s / 36s / 42s slow drift - Neutral Graphite/White) */
+/* ============================================================ */
 @keyframes ambientDriftA {
   0%, 100% {
     transform: translate3d(0, 0, 0) scale(1);
@@ -341,7 +398,9 @@
   .living-bg-drift-b,
   .living-bg-drift-c,
   .living-bg-wave-a,
-  .living-bg-wave-b {
+  .living-bg-wave-b,
+  /* Midnight Aurora: disable aurora animation, keep static deep background */
+  .bio-aurora-bg::before {
     animation: none !important;
     transform: none !important;
   }

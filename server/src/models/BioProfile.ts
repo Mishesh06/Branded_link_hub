@@ -1,6 +1,6 @@
 import { Schema, model, Document, Types } from 'mongoose';
 
-export type BioTheme = 'minimal-light' | 'dark-slate' | 'gradient';
+export type BioTheme = 'minimal-light' | 'dark-slate' | 'gradient' | 'midnight-aurora' | 'paper-studio';
 
 export interface ISocialLink {
   platform: string;
@@ -69,7 +69,7 @@ const bioProfileSchema = new Schema<IBioProfile>(
     },
     theme: {
       type: String,
-      enum: ['minimal-light', 'dark-slate', 'gradient'],
+      enum: ['minimal-light', 'dark-slate', 'gradient', 'midnight-aurora', 'paper-studio'],
       default: 'minimal-light'
     },
     socialLinks: {

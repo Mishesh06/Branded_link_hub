@@ -24,7 +24,9 @@ export const getThemeStyles = (theme?: BioTheme) => {
         textMuted: 'text-zinc-500',
         linkButton: 'bg-zinc-50 hover:bg-zinc-100 text-zinc-900 border-zinc-200 shadow-sm',
         socialBadge: 'bg-zinc-100 text-zinc-700 hover:text-zinc-900 border-zinc-200',
-        handle: 'text-zinc-500 bg-zinc-100'
+        handle: 'text-zinc-500 bg-zinc-100',
+        wrapperStyle: undefined as React.CSSProperties | undefined,
+        wrapperClass: ''
       };
     case 'gradient':
       return {
@@ -33,7 +35,33 @@ export const getThemeStyles = (theme?: BioTheme) => {
         linkButton:
           'bg-white/10 hover:bg-white/15 text-white border-white/15 backdrop-blur-md shadow-md',
         socialBadge: 'bg-white/10 text-white hover:bg-white/20 border-white/15',
-        handle: 'text-indigo-300 bg-indigo-950/60 border border-indigo-500/30'
+        handle: 'text-indigo-300 bg-indigo-950/60 border border-indigo-500/30',
+        wrapperStyle: undefined as React.CSSProperties | undefined,
+        wrapperClass: ''
+      };
+    case 'midnight-aurora':
+      return {
+        container: 'text-[#F5F7FA] bio-aurora-container',
+        textMuted: 'text-[#9CA6B5]',
+        linkButton:
+          'bg-white/5 hover:bg-white/10 text-[#F5F7FA] border-[#2A3545] shadow-sm backdrop-blur-sm transition-all duration-200',
+        socialBadge:
+          'bg-white/5 text-[#9CA6B5] hover:text-[#F5F7FA] hover:bg-white/10 border-[#2A3545]',
+        handle: 'text-[#6B8BAE] bg-[#10151C] border border-[#2A3545]',
+        wrapperStyle: undefined as React.CSSProperties | undefined,
+        wrapperClass: 'bio-aurora-bg'
+      };
+    case 'paper-studio':
+      return {
+        container: 'text-[#1E1D1A] bio-paper-container',
+        textMuted: 'text-[#6D685E]',
+        linkButton:
+          'bg-[#FFFDF8] hover:bg-[#F5EFE4] text-[#1E1D1A] border-[#DDD8CE] shadow-sm transition-all duration-200',
+        socialBadge:
+          'bg-[#FFFDF8] text-[#6D685E] hover:text-[#1E1D1A] hover:bg-[#F5EFE4] border-[#DDD8CE]',
+        handle: 'text-[#8A6E5C] bg-[#EDE8DF] border border-[#D4CEC5]',
+        wrapperStyle: undefined as React.CSSProperties | undefined,
+        wrapperClass: 'bio-paper-bg'
       };
     case 'dark-slate':
     default:
@@ -42,10 +70,13 @@ export const getThemeStyles = (theme?: BioTheme) => {
         textMuted: 'text-zinc-400',
         linkButton: 'bg-zinc-900 hover:bg-zinc-800 text-zinc-100 border-zinc-800 shadow-sm',
         socialBadge: 'bg-zinc-900 text-zinc-400 hover:text-zinc-200 border-zinc-800',
-        handle: 'text-zinc-400 bg-zinc-900 border border-zinc-800'
+        handle: 'text-zinc-400 bg-zinc-900 border border-zinc-800',
+        wrapperStyle: undefined as React.CSSProperties | undefined,
+        wrapperClass: ''
       };
   }
 };
+
 
 export const getSocialIcon = (platform: string) => {
   const p = platform.toLowerCase();
@@ -73,7 +104,7 @@ export const BioPreview: React.FC<BioPreviewProps> = ({ profile, links }) => {
 
         {/* Screen container */}
         <div
-          className={`w-full min-h-[540px] max-h-[580px] overflow-y-auto rounded-[2rem] p-5 pt-8 flex flex-col items-center text-center transition-all duration-300 ${styles.container}`}
+          className={`w-full min-h-[540px] max-h-[580px] overflow-y-auto rounded-[2rem] p-5 pt-8 flex flex-col items-center text-center transition-all duration-300 ${styles.container} ${styles.wrapperClass}`}
         >
           {/* Avatar */}
           <Avatar className="h-20 w-20 border-2 border-border/80 shadow-md mb-3">

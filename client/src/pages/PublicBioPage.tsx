@@ -69,7 +69,7 @@ export const PublicBioPage: React.FC = () => {
 
   return (
     <div
-      className={`min-h-screen w-full flex flex-col items-center justify-start p-4 sm:p-8 transition-colors duration-300 ${styles.container}`}
+      className={`min-h-screen w-full flex flex-col items-center justify-start p-4 sm:p-8 transition-colors duration-300 ${styles.container} ${styles.wrapperClass}`}
     >
       <div className="w-full max-w-md mx-auto flex flex-col items-center text-center pt-8 pb-12 flex-1">
         {/* Avatar */}

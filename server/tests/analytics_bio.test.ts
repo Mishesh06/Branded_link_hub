@@ -116,4 +116,85 @@ describe('Analytics Aggregation & Bio Hub Suite', () => {
     expect(publicRes.body.data.profile.displayName).toBe('Alex Developer');
     expect(publicRes.body.data.profile.theme).toBe('dark-slate');
   });
+
+  it('should accept all five valid themes', async () => {
+    const validThemes = ['minimal-light', 'dark-slate', 'gradient', 'midnight-aurora', 'paper-studio'];
+
+    for (const theme of validThemes) {
+      const res = await request(app)
+        .put('/api/v1/bio/me')
+        .set('Cookie', [userCookie])
+        .send({ displayName: 'Test User', theme });
+
+      expect(res.status).toBe(200);
+      expect(res.body.data.profile.theme).toBe(theme);
+    }
+  });
+
+  it('should persist midnight-aurora theme after save and reload', async () => {
+    // Save midnight-aurora
+    const saveRes = await request(app)
+      .put('/api/v1/bio/me')
+      .set('Cookie', [userCookie])
+      .send({ displayName: 'Aurora User', theme: 'midnight-aurora' });
+
+    expect(saveRes.status).toBe(200);
+    expect(saveRes.body.data.profile.theme).toBe('midnight-aurora');
+
+    // Reload and verify persistence
+    const reloadRes = await request(app)
+      .get('/api/v1/bio/me')
+      .set('Cookie', [userCookie]);
+
+    expect(reloadRes.status).toBe(200);
+    expect(reloadRes.body.data.profile.theme).toBe('midnight-aurora');
+  });
+
+  it('should persist paper-studio theme after save and reload', async () => {
+    // Save paper-studio
+    const saveRes = await request(app)
+      .put('/api/v1/bio/me')
+      .set('Cookie', [userCookie])
+      .send({ displayName: 'Paper User', theme: 'paper-studio' });
+
+    expect(saveRes.status).toBe(200);
+    expect(saveRes.body.data.profile.theme).toBe('paper-studio');
+
+    // Reload and verify persistence
+    const reloadRes = await request(app)
+      .get('/api/v1/bio/me')
+      .set('Cookie', [userCookie]);
+
+    expect(reloadRes.status).toBe(200);
+    expect(reloadRes.body.data.profile.theme).toBe('paper-studio');
+  });
+
+  it('should reject an invalid theme value with 400', async () => {
+    const res = await request(app)
+      .put('/api/v1/bio/me')
+      .set('Cookie', [userCookie])
+      .send({ displayName: 'Test User', theme: 'invalid-theme' });
+
+    expect(res.status).toBe(400);
+  });
+
+  it('should keep existing users on minimal-light, dark-slate, and gradient unbroken', async () => {
+    const legacyThemes = ['minimal-light', 'dark-slate', 'gradient'] as const;
+
+    for (const theme of legacyThemes) {
+      const saveRes = await request(app)
+        .put('/api/v1/bio/me')
+        .set('Cookie', [userCookie])
+        .send({ displayName: 'Legacy User', theme });
+
+      expect(saveRes.status).toBe(200);
+      expect(saveRes.body.data.profile.theme).toBe(theme);
+
+      // Verify public profile renders with this theme
+      const username = saveRes.body.data.profile.username;
+      const publicRes = await request(app).get(`/api/v1/bio/public/${username}`);
+      expect(publicRes.status).toBe(200);
+      expect(publicRes.body.data.profile.theme).toBe(theme);
+    }
+  });
 });
