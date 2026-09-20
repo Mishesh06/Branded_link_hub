@@ -69,7 +69,7 @@ export const QrCodeModal: React.FC<QrCodeModalProps> = ({ link, isOpen, onClose 
         </DialogHeader>
 
         <div className="flex flex-col items-center justify-center py-4 space-y-4">
-          <div className="p-3 bg-white rounded-xl shadow-inner border border-zinc-200">
+          <div className="p-3.5 bg-white rounded-xl shadow-inner border border-zinc-200 transition-all duration-200 hover:shadow-md">
             {qrDataUrl ? (
               <img
                 src={qrDataUrl}
@@ -78,16 +78,16 @@ export const QrCodeModal: React.FC<QrCodeModalProps> = ({ link, isOpen, onClose 
               />
             ) : (
               <div className="w-48 h-48 flex items-center justify-center text-xs text-muted-foreground">
-                Generating...
+                Generating QR...
               </div>
             )}
           </div>
 
           <div className="w-full text-center">
-            <p className="font-mono text-xs text-zinc-300 font-semibold truncate">
+            <p className="font-mono text-xs text-zinc-200 font-semibold truncate">
               /r/{link?.shortCode}
             </p>
-            <p className="text-[11px] text-muted-foreground truncate max-w-xs mx-auto mt-0.5">
+            <p className="text-[11px] text-muted-foreground truncate max-w-xs mx-auto mt-0.5 font-mono">
               {link?.originalUrl}
             </p>
           </div>
@@ -97,7 +97,7 @@ export const QrCodeModal: React.FC<QrCodeModalProps> = ({ link, isOpen, onClose 
           <Button variant="outline" size="sm" onClick={handleCopy} className="text-xs w-full sm:w-auto">
             {copied ? (
               <>
-                <Check className="mr-1.5 h-3.5 w-3.5" />
+                <Check className="mr-1.5 h-3.5 w-3.5 text-emerald-400" />
                 Copied
               </>
             ) : (

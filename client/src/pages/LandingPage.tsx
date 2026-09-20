@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Navbar } from '@/components/layout/Navbar';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
+import { AnimatedBackground } from '@/components/ui/AnimatedBackground';
 import { useAuth } from '@/context/AuthContext';
 import {
   Link2,
@@ -14,10 +15,53 @@ import {
   ArrowRight,
   CheckCircle2
 } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 export const LandingPage: React.FC = () => {
   const { login } = useAuth();
   const navigate = useNavigate();
+  const [scrollY, setScrollY] = useState(0);
+  const featureSectionRef = useRef<HTMLElement>(null);
+  const securitySectionRef = useRef<HTMLElement>(null);
+  const [featureVisible, setFeatureVisible] = useState(false);
+  const [securityVisible, setSecurityVisible] = useState(false);
+
+  useEffect(() => {
+    let ticking = false;
+    const handleScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          setScrollY(window.scrollY);
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            if (entry.target === featureSectionRef.current) {
+              setFeatureVisible(true);
+            } else if (entry.target === securitySectionRef.current) {
+              setSecurityVisible(true);
+            }
+          }
+        });
+      },
+      { threshold: 0.12 }
+    );
+
+    if (featureSectionRef.current) observer.observe(featureSectionRef.current);
+    if (securitySectionRef.current) observer.observe(securitySectionRef.current);
+
+    return () => observer.disconnect();
+  }, []);
 
   const handleDemoLogin = async () => {
     try {
@@ -29,17 +73,20 @@ export const LandingPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background text-foreground flex flex-col">
+    <div className="min-h-screen bg-[#050607] text-foreground flex flex-col relative selection:bg-zinc-800 selection:text-white">
+      {/* 21st-Inspired Living Background */}
+      <AnimatedBackground variant="landing" scrollY={scrollY} />
+
       <Navbar />
 
       {/* Hero Section */}
-      <main className="flex-1">
-        <section className="relative overflow-hidden pt-16 pb-20 sm:pt-24 sm:pb-28 border-b border-border/40">
-          <div className="container mx-auto max-w-5xl px-4 sm:px-6 text-center">
+      <main className="flex-1 animate-page-enter relative z-10">
+        <section className="relative overflow-hidden pt-16 pb-20 sm:pt-24 sm:pb-28 border-b border-border/30">
+          <div className="container relative z-10 mx-auto max-w-5xl px-4 sm:px-6 text-center">
             {/* Tag */}
-            <div className="inline-flex items-center space-x-2 rounded-full border border-border/80 bg-muted/40 px-3.5 py-1 text-xs text-muted-foreground mb-6">
-              <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
-              <span>Bitly + Linktree Hybrid Technical Assessment</span>
+            <div className="inline-flex items-center space-x-2 rounded-full border border-border/80 bg-secondary/50 px-3.5 py-1 text-xs text-muted-foreground mb-6 shadow-sm">
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]" />
+              <span className="font-mono text-[11px]">Bitly + Linktree Hybrid Architecture</span>
             </div>
 
             {/* Title */}
@@ -56,16 +103,19 @@ export const LandingPage: React.FC = () => {
             {/* Action Buttons */}
             <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
               <Link to="/signup" className="w-full sm:w-auto">
-                <Button size="lg" className="w-full sm:w-auto font-medium text-sm shadow-md">
+                <Button
+                  size="lg"
+                  className="btn-light-sweep w-full sm:w-auto font-medium text-xs shadow-sm hover:-translate-y-[1px] active:scale-[0.98] transition-all duration-180"
+                >
                   Get Started Free
-                  <ArrowRight className="ml-2 h-4 w-4" />
+                  <ArrowRight className="ml-2 h-3.5 w-3.5" />
                 </Button>
               </Link>
               <Button
                 variant="outline"
                 size="lg"
                 onClick={handleDemoLogin}
-                className="w-full sm:w-auto font-medium text-sm border-zinc-700 hover:bg-zinc-800/60"
+                className="w-full sm:w-auto font-medium text-xs border-zinc-700/80 hover:bg-zinc-800/60 hover:-translate-y-[1px] active:scale-[0.98] transition-all duration-180"
               >
                 Launch Demo Account
               </Button>
@@ -73,13 +123,21 @@ export const LandingPage: React.FC = () => {
 
             {/* Quick Demo Credentials Info */}
             <p className="mt-3 text-xs text-muted-foreground font-mono">
-              Demo credentials: <span className="text-zinc-300">demo@brandedhub.dev</span> / <span className="text-zinc-300">DemoPassword123!</span>
+              Demo credentials: <span className="text-zinc-300">demo@brandedhub.dev</span> /{' '}
+              <span className="text-zinc-300">DemoPassword123!</span>
             </p>
           </div>
         </section>
 
-        {/* Feature Grid */}
-        <section className="py-16 sm:py-20 bg-muted/10 border-b border-border/40">
+        {/* Feature Grid - Slightly lighter graphite background for section depth */}
+        <section
+          ref={featureSectionRef}
+          className={cn(
+            'py-16 sm:py-20 bg-[#0C0E13]/60 border-b border-border/30 backdrop-blur-[1px] transition-colors duration-500',
+            'reveal-on-scroll',
+            featureVisible && 'is-revealed'
+          )}
+        >
           <div className="container mx-auto max-w-5xl px-4 sm:px-6">
             <div className="text-center max-w-xl mx-auto mb-12">
               <h2 className="text-2xl font-bold tracking-tight text-foreground">
@@ -92,9 +150,9 @@ export const LandingPage: React.FC = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {/* Feature 1 */}
-              <Card className="border-border/60 bg-card/80">
+              <Card className="stagger-card border-border/60 bg-card/85 hover:-translate-y-[1px] hover:border-border hover:shadow-[0_8px_28px_-6px_rgba(0,0,0,0.6)] transition-all duration-200">
                 <CardContent className="p-6 space-y-3">
-                  <div className="h-10 w-10 rounded-lg bg-zinc-900 border border-zinc-700 flex items-center justify-center text-white">
+                  <div className="h-10 w-10 rounded-lg bg-zinc-900 border border-zinc-700 flex items-center justify-center text-white transition-colors duration-200 group-hover:border-zinc-500">
                     <Zap className="h-5 w-5" />
                   </div>
                   <h3 className="text-base font-semibold text-foreground">
@@ -108,9 +166,9 @@ export const LandingPage: React.FC = () => {
               </Card>
 
               {/* Feature 2 */}
-              <Card className="border-border/60 bg-card/80">
+              <Card className="stagger-card border-border/60 bg-card/85 hover:-translate-y-[1px] hover:border-border hover:shadow-[0_8px_28px_-6px_rgba(0,0,0,0.6)] transition-all duration-200">
                 <CardContent className="p-6 space-y-3">
-                  <div className="h-10 w-10 rounded-lg bg-zinc-900 border border-zinc-700 flex items-center justify-center text-white">
+                  <div className="h-10 w-10 rounded-lg bg-zinc-900 border border-zinc-700 flex items-center justify-center text-white transition-colors duration-200 group-hover:border-zinc-500">
                     <BarChart3 className="h-5 w-5" />
                   </div>
                   <h3 className="text-base font-semibold text-foreground">
@@ -124,9 +182,9 @@ export const LandingPage: React.FC = () => {
               </Card>
 
               {/* Feature 3 */}
-              <Card className="border-border/60 bg-card/80">
+              <Card className="stagger-card border-border/60 bg-card/85 hover:-translate-y-[1px] hover:border-border hover:shadow-[0_8px_28px_-6px_rgba(0,0,0,0.6)] transition-all duration-200">
                 <CardContent className="p-6 space-y-3">
-                  <div className="h-10 w-10 rounded-lg bg-zinc-900 border border-zinc-700 flex items-center justify-center text-white">
+                  <div className="h-10 w-10 rounded-lg bg-zinc-900 border border-zinc-700 flex items-center justify-center text-white transition-colors duration-200 group-hover:border-zinc-500">
                     <Sparkles className="h-5 w-5" />
                   </div>
                   <h3 className="text-base font-semibold text-foreground">
@@ -142,10 +200,17 @@ export const LandingPage: React.FC = () => {
           </div>
         </section>
 
-        {/* Security & Architecture Highlights */}
-        <section className="py-16 sm:py-20">
+        {/* Security & Architecture Highlights - Deeper graphite transition */}
+        <section
+          ref={securitySectionRef}
+          className={cn(
+            'py-16 sm:py-20 bg-transparent',
+            'reveal-on-scroll',
+            securityVisible && 'is-revealed'
+          )}
+        >
           <div className="container mx-auto max-w-4xl px-4 sm:px-6">
-            <div className="rounded-2xl border border-border bg-card/60 p-8 sm:p-10 space-y-6">
+            <div className="rounded-2xl border border-border/70 bg-card/60 p-8 sm:p-10 space-y-6 shadow-[0_4px_24px_-6px_rgba(0,0,0,0.5)] backdrop-blur-[2px]">
               <h3 className="text-xl font-bold tracking-tight text-foreground flex items-center space-x-2">
                 <ShieldCheck className="h-6 w-6 text-emerald-400" />
                 <span>Security &amp; Architecture Standards</span>
@@ -187,9 +252,10 @@ export const LandingPage: React.FC = () => {
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-border/40 py-6 text-center text-xs text-muted-foreground">
+      <footer className="border-t border-border/30 bg-[#050607]/80 backdrop-blur-sm py-6 text-center text-xs text-muted-foreground relative z-10">
         <p>Branded Short-Link &amp; Bio-Link Hub — MERN Stack Assessment Submission</p>
       </footer>
     </div>
   );
 };
+

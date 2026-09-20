@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { linksApi } from '@/services/api';
 import { LinkItem, Pagination } from '@/types';
 import { LinkTable } from '@/components/links/LinkTable';
@@ -8,6 +9,9 @@ import { Input } from '@/components/ui/input';
 import { Plus, Search, RefreshCw } from 'lucide-react';
 
 export const LinksPage: React.FC = () => {
+  const [searchParams] = useSearchParams();
+  const initialSearch = searchParams.get('search') || '';
+
   const [links, setLinks] = useState<LinkItem[]>([]);
   const [pagination, setPagination] = useState<Pagination>({
     total: 0,
@@ -15,7 +19,7 @@ export const LinksPage: React.FC = () => {
     limit: 10,
     totalPages: 1
   });
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState(initialSearch);
   const [isLoading, setIsLoading] = useState(true);
   const [isCreateOpen, setIsCreateOpen] = useState(false);
 

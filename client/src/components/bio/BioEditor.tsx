@@ -314,10 +314,10 @@ export const BioEditor: React.FC<BioEditorProps> = ({
                 return (
                   <label
                     key={link._id}
-                    className={`flex items-center justify-between p-2.5 rounded-lg border text-xs cursor-pointer transition-colors ${
+                    className={`flex items-center justify-between p-2.5 rounded-lg border text-xs cursor-pointer transition-all duration-150 ${
                       isSelected
-                        ? 'border-indigo-500/50 bg-indigo-500/10 text-foreground'
-                        : 'border-border/40 bg-muted/20 hover:bg-muted/40 text-muted-foreground'
+                        ? 'border-zinc-500/60 bg-zinc-800/40 text-foreground'
+                        : 'border-border/40 bg-secondary/20 hover:bg-secondary/50 text-muted-foreground hover:text-foreground'
                     }`}
                   >
                     <div className="flex items-center space-x-2.5 truncate mr-2">
@@ -325,9 +325,9 @@ export const BioEditor: React.FC<BioEditorProps> = ({
                         type="checkbox"
                         checked={isSelected}
                         onChange={() => handleToggleShowcase(link._id)}
-                        className="rounded border-border text-indigo-600 focus:ring-indigo-500 h-3.5 w-3.5 cursor-pointer"
+                        className="rounded border-border text-zinc-300 focus:ring-zinc-400 accent-zinc-200 h-3.5 w-3.5 cursor-pointer"
                       />
-                      <Link2 className="h-3.5 w-3.5 shrink-0" />
+                      <Link2 className="h-3.5 w-3.5 shrink-0 text-zinc-400" />
                       <span className="font-medium text-foreground truncate">
                         {link.title || link.shortCode}
                       </span>

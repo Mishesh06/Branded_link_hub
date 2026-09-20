@@ -51,15 +51,15 @@ export const DeviceDistributionChart: React.FC<DeviceDistributionChartProps> = (
                   </div>
                 </div>
                 {/* Visual Progress Bar */}
-                <div className="h-2 w-full bg-muted rounded-full overflow-hidden">
+                <div className="h-1.5 w-full bg-secondary rounded-full overflow-hidden border border-border/40">
                   <div
                     className={`h-full rounded-full transition-all duration-500 ${
                       item.device === 'Desktop'
-                        ? 'bg-sky-500'
+                        ? 'bg-slate-200'
                         : item.device === 'Mobile'
-                        ? 'bg-emerald-500'
+                        ? 'bg-emerald-400'
                         : item.device === 'Tablet'
-                        ? 'bg-indigo-500'
+                        ? 'bg-sky-400'
                         : 'bg-zinc-500'
                     }`}
                     style={{ width: `${item.percentage}%` }}

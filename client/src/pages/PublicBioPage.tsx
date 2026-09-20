@@ -73,40 +73,49 @@ export const PublicBioPage: React.FC = () => {
     >
       <div className="w-full max-w-md mx-auto flex flex-col items-center text-center pt-8 pb-12 flex-1">
         {/* Avatar */}
-        <Avatar className="h-24 w-24 border-2 border-border/80 shadow-lg mb-4">
-          <AvatarImage src={profile.avatarUrl || ''} alt={profile.displayName} />
-          <AvatarFallback className="text-xl font-bold">
-            {profile.displayName ? profile.displayName.slice(0, 2).toUpperCase() : 'ME'}
-          </AvatarFallback>
-        </Avatar>
+        <div className="animate-row-enter" style={{ animationDelay: '0ms' }}>
+          <Avatar className="h-24 w-24 border-2 border-border/80 shadow-xl mb-4">
+            <AvatarImage src={profile.avatarUrl || ''} alt={profile.displayName} />
+            <AvatarFallback className="text-xl font-bold">
+              {profile.displayName ? profile.displayName.slice(0, 2).toUpperCase() : 'ME'}
+            </AvatarFallback>
+          </Avatar>
+        </div>
 
-        {/* Display Name */}
-        <h1 className="text-xl sm:text-2xl font-bold tracking-tight">
-          {profile.displayName || `@${profile.username}`}
-        </h1>
-
-        {/* Username handle */}
-        <span className={`text-xs font-mono px-3 py-0.5 rounded-full mt-1.5 ${styles.handle}`}>
-          @{profile.username}
-        </span>
+        {/* Display Name & Username */}
+        <div className="animate-row-enter space-y-1" style={{ animationDelay: '60ms' }}>
+          <h1 className="text-xl sm:text-2xl font-bold tracking-tight">
+            {profile.displayName || `@${profile.username}`}
+          </h1>
+          <div>
+            <span className={`inline-block text-xs font-mono px-3 py-0.5 rounded-full border ${styles.handle}`}>
+              @{profile.username}
+            </span>
+          </div>
+        </div>
 
         {/* Bio description */}
         {profile.bio && (
-          <p className={`text-xs sm:text-sm mt-3 max-w-sm leading-relaxed ${styles.textMuted}`}>
-            {profile.bio}
-          </p>
+          <div className="animate-row-enter mt-3" style={{ animationDelay: '120ms' }}>
+            <p className={`text-xs sm:text-sm max-w-sm leading-relaxed ${styles.textMuted}`}>
+              {profile.bio}
+            </p>
+          </div>
         )}
 
         {/* Social Link Badges */}
         {activeSocials.length > 0 && (
-          <div className="flex flex-wrap items-center justify-center gap-2 mt-5">
+          <div
+            className="flex flex-wrap items-center justify-center gap-2 mt-5 animate-row-enter"
+            style={{ animationDelay: '180ms' }}
+          >
             {activeSocials.map((soc, idx) => (
               <a
                 key={idx}
                 href={soc.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className={`p-2.5 rounded-full border transition-all hover:scale-110 active:scale-95 shadow-sm ${styles.socialBadge}`}
+                className={`p-2.5 rounded-full border transition-all duration-150 hover:-translate-y-0.5 active:scale-95 shadow-sm ${styles.socialBadge}`}
                 title={soc.title}
               >
                 {getSocialIcon(soc.platform)}
@@ -122,15 +131,16 @@ export const PublicBioPage: React.FC = () => {
               No links currently available on this profile.
             </div>
           ) : (
-            links.map((link) => (
+            links.map((link, idx) => (
               <a
                 key={link._id}
                 href={`/r/${link.shortCode}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className={`flex items-center justify-between p-3.5 sm:p-4 rounded-xl border text-sm font-medium transition-all hover:scale-[1.01] active:scale-[0.99] shadow-sm ${styles.linkButton}`}
+                style={{ animationDelay: `${240 + idx * 50}ms` }}
+                className={`flex items-center justify-between p-3.5 sm:p-4 rounded-xl border text-sm font-medium transition-all duration-150 hover:-translate-y-0.5 active:scale-[0.99] shadow-sm animate-row-enter ${styles.linkButton}`}
               >
-                <span className="truncate pr-3 text-left">{link.title || link.shortCode}</span>
+                <span className="truncate pr-3 text-left font-medium">{link.title || link.shortCode}</span>
                 <ExternalLink className="h-4 w-4 shrink-0 opacity-60" />
               </a>
             ))

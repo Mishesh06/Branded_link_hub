@@ -75,7 +75,7 @@ export const AnalyticsPage: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6 max-w-7xl mx-auto">
+    <div className="space-y-6 max-w-7xl mx-auto animate-page-enter">
       {/* Header & Controls */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
@@ -108,7 +108,7 @@ export const AnalyticsPage: React.FC = () => {
           <select
             value={linkId || 'all'}
             onChange={(e) => handleLinkSelect(e.target.value)}
-            className="h-8 rounded-md border border-border bg-card px-2.5 text-xs text-foreground font-mono focus:outline-none focus:ring-1 focus:ring-ring"
+            className="h-8 rounded-md border border-border/70 bg-secondary/50 px-2.5 text-xs text-foreground font-mono focus:outline-none focus:ring-1 focus:ring-zinc-400 cursor-pointer"
           >
             <option value="all">All Links (Account Overview)</option>
             {userLinks.map((l) => (
@@ -119,14 +119,14 @@ export const AnalyticsPage: React.FC = () => {
           </select>
 
           {/* Time range pills */}
-          <div className="flex items-center space-x-1 bg-muted p-0.5 rounded-md text-xs">
+          <div className="flex items-center space-x-1 bg-secondary/60 border border-border/50 p-0.5 rounded-md text-xs">
             {[7, 14, 30, 90].map((d) => (
               <button
                 key={d}
                 onClick={() => setDays(d)}
-                className={`px-2.5 py-1 rounded-sm text-xs font-medium transition-colors cursor-pointer ${
+                className={`px-2.5 py-1 rounded-sm text-xs font-medium transition-all duration-150 cursor-pointer ${
                   days === d
-                    ? 'bg-background text-foreground shadow-sm'
+                    ? 'bg-zinc-800 text-white shadow-sm'
                     : 'text-muted-foreground hover:text-foreground'
                 }`}
               >

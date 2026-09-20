@@ -18,8 +18,7 @@ const linkSchema = new Schema<ILink>(
     userId: {
       type: Schema.Types.ObjectId,
       ref: 'User',
-      required: true,
-      index: true
+      required: true
     },
     title: {
       type: String,
@@ -35,8 +34,7 @@ const linkSchema = new Schema<ILink>(
       type: String,
       required: true,
       unique: true,
-      trim: true,
-      index: true
+      trim: true
     },
     isCustomSlug: {
       type: Boolean,

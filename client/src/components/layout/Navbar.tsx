@@ -30,7 +30,7 @@ export const Navbar: React.FC = () => {
                 variant="outline"
                 size="sm"
                 onClick={() => navigate('/dashboard')}
-                className="text-xs"
+                className="text-xs hover:-translate-y-px active:scale-[0.98] transition-all duration-180"
               >
                 Dashboard
                 <ArrowRight className="ml-1.5 h-3.5 w-3.5" />
@@ -39,7 +39,7 @@ export const Navbar: React.FC = () => {
                 variant="ghost"
                 size="sm"
                 onClick={() => logout()}
-                className="text-xs text-muted-foreground hover:text-foreground"
+                className="text-xs text-muted-foreground hover:text-foreground hover:-translate-y-px active:scale-[0.98] transition-all duration-180"
               >
                 Logout
               </Button>
@@ -47,12 +47,12 @@ export const Navbar: React.FC = () => {
           ) : (
             <>
               <Link to="/login">
-                <Button variant="ghost" size="sm" className="text-xs">
+                <Button variant="ghost" size="sm" className="text-xs hover:-translate-y-px active:scale-[0.98] transition-all duration-180">
                   Sign In
                 </Button>
               </Link>
               <Link to="/signup">
-                <Button size="sm" className="text-xs">
+                <Button size="sm" className="text-xs hover:-translate-y-px active:scale-[0.98] transition-all duration-180">
                   Get Started
                 </Button>
               </Link>

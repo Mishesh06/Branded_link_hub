@@ -40,6 +40,9 @@ export interface OverviewAnalytics {
 
 export class AnalyticsService {
   static async getOverview(userId: string, days = 30): Promise<OverviewAnalytics> {
+    if (!mongoose.Types.ObjectId.isValid(userId)) {
+      throw new AppError('Invalid user ID format.', 400);
+    }
     const userObjectId = new mongoose.Types.ObjectId(userId);
     const startDate = new Date();
     startDate.setDate(startDate.getDate() - days);
@@ -197,6 +200,13 @@ export class AnalyticsService {
     topReferrers: ReferrerMetric[];
     recentClicks: any[];
   }> {
+    if (!mongoose.Types.ObjectId.isValid(linkId)) {
+      throw new AppError('Invalid link ID format.', 400);
+    }
+    if (!mongoose.Types.ObjectId.isValid(userId)) {
+      throw new AppError('Invalid user ID format.', 400);
+    }
+
     const linkObjectId = new mongoose.Types.ObjectId(linkId);
     const userObjectId = new mongoose.Types.ObjectId(userId);
 

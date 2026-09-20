@@ -44,7 +44,7 @@ export const DashboardOverviewPage: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6 max-w-7xl mx-auto">
+    <div className="space-y-6 max-w-7xl mx-auto animate-page-enter">
       {/* Page Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
@@ -85,10 +85,10 @@ export const DashboardOverviewPage: React.FC = () => {
       {/* Grid: Top Links + Device/Referrer Breakdowns */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Top Performing Links */}
-        <Card className="lg:col-span-2 border-border/60 bg-card/80">
+        <Card className="lg:col-span-2 border-border/60 bg-card/85">
           <CardHeader className="pb-3 flex flex-row items-center justify-between">
             <div>
-              <CardTitle className="text-base">Top Performing Links</CardTitle>
+              <CardTitle className="text-sm">Top Performing Links</CardTitle>
               <CardDescription className="text-xs">
                 Links generating the highest engagement
               </CardDescription>
@@ -102,18 +102,19 @@ export const DashboardOverviewPage: React.FC = () => {
           </CardHeader>
           <CardContent>
             {!analytics?.topLinks || analytics.topLinks.length === 0 ? (
-              <div className="py-8 text-center text-xs text-muted-foreground">
+              <div className="py-10 text-center text-xs text-muted-foreground">
                 <p>No short links found.</p>
                 <p className="text-[11px] mt-1">
                   Create your first link to start tracking performance metrics.
                 </p>
               </div>
             ) : (
-              <div className="space-y-2.5">
-                {analytics.topLinks.map((link) => (
+              <div className="space-y-2">
+                {analytics.topLinks.map((link, idx) => (
                   <div
                     key={link._id}
-                    className="flex items-center justify-between p-3 rounded-lg border border-border/40 bg-muted/20 hover:bg-muted/40 transition-colors"
+                    style={{ animationDelay: `${idx * 50}ms` }}
+                    className="flex items-center justify-between p-3 rounded-lg border border-border/50 bg-secondary/30 hover:bg-secondary/60 hover:border-border transition-all duration-150 group animate-row-enter"
                   >
                     <div className="truncate max-w-[220px] sm:max-w-md pr-2">
                       <div className="flex items-center space-x-2">
@@ -129,13 +130,13 @@ export const DashboardOverviewPage: React.FC = () => {
                           /r/{link.shortCode}
                         </a>
                       </div>
-                      <span className="text-[11px] text-muted-foreground truncate block font-mono">
+                      <span className="text-[11px] text-muted-foreground truncate block font-mono mt-0.5">
                         {link.originalUrl}
                       </span>
                     </div>
 
                     <div className="flex items-center space-x-3 shrink-0">
-                      <span className="font-mono text-xs font-semibold text-foreground">
+                      <span className="font-mono text-xs font-semibold text-foreground bg-secondary/80 px-2 py-0.5 rounded border border-border/40">
                         {link.clickCount} clicks
                       </span>
                       <Button
@@ -146,9 +147,9 @@ export const DashboardOverviewPage: React.FC = () => {
                         title="Copy short URL"
                       >
                         {copiedId === link._id ? (
-                          <Check className="h-3 w-3 text-emerald-400" />
+                          <Check className="h-3.5 w-3.5 text-emerald-400" />
                         ) : (
-                          <Copy className="h-3 w-3" />
+                          <Copy className="h-3.5 w-3.5" />
                         )}
                       </Button>
                     </div>

@@ -43,11 +43,22 @@ export const errorHandler = (
     });
   }
 
-  // Handle Mongoose CastError (invalid ObjectId)
-  if (err.name === 'CastError') {
+  // Handle Mongoose CastError or BSONError (invalid ObjectId)
+  if (
+    err.name === 'CastError' ||
+    err.name === 'BSONError' ||
+    err.name === 'BSONTypeError' ||
+    err.constructor?.name === 'BSONError' ||
+    err.constructor?.name === 'BSONTypeError' ||
+    (typeof err.message === 'string' &&
+      (err.message.includes('must be a single String of 12 bytes or a string of 24 hex characters') ||
+        err.message.includes('Argument passed in must be a single String') ||
+        err.message.includes('input must be a 24 character hex string') ||
+        err.message.includes('BSONError')))
+  ) {
     return res.status(400).json({
       success: false,
-      message: `Invalid ID format: ${err.value}`
+      message: `Invalid ID format: ${err.value || err.message}`
     });
   }
 

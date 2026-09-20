@@ -14,21 +14,22 @@ export interface ButtonProps
 const buttonVariants = {
   variant: {
     default:
-      'bg-primary text-primary-foreground shadow hover:bg-primary/90 active:scale-[0.98]',
+      'bg-zinc-100 text-zinc-900 border border-white/20 shadow-sm hover:bg-white hover:-translate-y-px active:scale-[0.98] transition-all duration-180',
     destructive:
-      'bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90 active:scale-[0.98]',
+      'bg-red-500/15 text-red-400 border border-red-500/30 shadow-sm hover:bg-red-500/25 hover:-translate-y-px active:scale-[0.98] transition-all duration-180',
     outline:
-      'border border-border bg-background shadow-sm hover:bg-muted hover:text-foreground active:scale-[0.98]',
+      'border border-border/80 bg-card/60 text-foreground shadow-sm hover:bg-muted/80 hover:border-border hover:text-foreground hover:-translate-y-px active:scale-[0.98] transition-all duration-180',
     secondary:
-      'bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80 active:scale-[0.98]',
-    ghost: 'hover:bg-muted hover:text-foreground active:scale-[0.98]',
-    link: 'text-primary underline-offset-4 hover:underline'
+      'bg-secondary/90 text-secondary-foreground border border-border/40 shadow-sm hover:bg-secondary hover:border-border/80 hover:-translate-y-px active:scale-[0.98] transition-all duration-180',
+    ghost:
+      'hover:bg-muted/60 text-muted-foreground hover:text-foreground active:scale-[0.98] transition-all duration-180',
+    link: 'text-foreground underline-offset-4 hover:underline'
   },
   size: {
-    default: 'h-9 px-4 py-2 text-sm',
-    sm: 'h-8 rounded-md px-3 text-xs',
-    lg: 'h-10 rounded-md px-8 text-base',
-    icon: 'h-9 w-9 p-0 flex items-center justify-center'
+    default: 'h-9 px-4 py-2 text-xs font-medium',
+    sm: 'h-8 rounded-md px-3 text-xs font-medium',
+    lg: 'h-10 rounded-md px-6 text-sm font-medium',
+    icon: 'h-8 w-8 p-0 flex items-center justify-center'
   }
 };
 

@@ -73,12 +73,12 @@ export const BioBuilderPage: React.FC = () => {
   }
 
   return (
-    <div className="space-y-6 max-w-7xl mx-auto">
+    <div className="space-y-6 max-w-7xl mx-auto animate-page-enter">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
         <div>
           <h1 className="text-xl font-bold tracking-tight text-foreground flex items-center space-x-2">
-            <Sparkles className="h-5 w-5 text-indigo-400" />
+            <Sparkles className="h-5 w-5 text-zinc-300" />
             <span>Link-in-Bio Hub Studio</span>
           </h1>
           <p className="text-xs text-muted-foreground mt-0.5">

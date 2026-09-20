@@ -51,9 +51,9 @@ export const ThemePicker: React.FC<ThemePickerProps> = ({ currentTheme, onThemeC
             key={theme.id}
             type="button"
             onClick={() => onThemeChange(theme.id)}
-            className={`flex flex-col p-3 rounded-xl border text-left transition-all relative overflow-hidden cursor-pointer ${
+            className={`flex flex-col p-3 rounded-xl border text-left transition-all duration-150 relative overflow-hidden cursor-pointer ${
               isSelected
-                ? 'border-indigo-500 ring-2 ring-indigo-500/30 bg-card'
+                ? 'border-zinc-300 ring-1 ring-zinc-400/40 bg-card shadow-sm'
                 : 'border-border/60 bg-card/60 hover:border-border hover:bg-card'
             }`}
           >
@@ -68,7 +68,7 @@ export const ThemePicker: React.FC<ThemePickerProps> = ({ currentTheme, onThemeC
             <div className="flex items-center justify-between w-full">
               <span className="text-xs font-semibold text-foreground">{theme.name}</span>
               {isSelected && (
-                <div className="h-4 w-4 rounded-full bg-indigo-500 text-white flex items-center justify-center">
+                <div className="h-4 w-4 rounded-full bg-zinc-100 text-zinc-900 flex items-center justify-center">
                   <Check className="h-2.5 w-2.5 stroke-[3]" />
                 </div>
               )}

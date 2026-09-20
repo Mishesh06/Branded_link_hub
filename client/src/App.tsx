@@ -18,6 +18,7 @@ import { DashboardOverviewPage } from '@/pages/DashboardOverviewPage';
 import { LinksPage } from '@/pages/LinksPage';
 import { AnalyticsPage } from '@/pages/AnalyticsPage';
 import { BioBuilderPage } from '@/pages/BioBuilderPage';
+import { QrCodesPage } from '@/pages/QrCodesPage';
 import { SettingsPage } from '@/pages/SettingsPage';
 
 export const App: React.FC = () => {
@@ -48,6 +49,7 @@ export const App: React.FC = () => {
             <Route path="links" element={<LinksPage />} />
             <Route path="analytics" element={<AnalyticsPage />} />
             <Route path="bio" element={<BioBuilderPage />} />
+            <Route path="qr" element={<QrCodesPage />} />
             <Route path="settings" element={<SettingsPage />} />
           </Route>
 

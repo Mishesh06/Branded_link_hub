@@ -5,7 +5,7 @@ import cookieParser from 'cookie-parser';
 import path from 'path';
 import fs from 'fs';
 import { env } from './config/env';
-import { errorHandler } from './middleware/errorHandler';
+import { errorHandler, AppError } from './middleware/errorHandler';
 import { apiLimiter } from './middleware/rateLimiter';
 import authRoutes from './routes/authRoutes';
 import linkRoutes from './routes/linkRoutes';
@@ -28,13 +28,27 @@ export const createApp = () => {
   );
 
   // CORS configuration for credentials and httpOnly cookies
-  const allowedOrigins = [
-    env.CLIENT_URL,
+  const configuredOrigins = env.CLIENT_URL
+    ? env.CLIENT_URL.split(',').map((s) => s.trim()).filter(Boolean)
+    : [];
+
+  const devOrigins = [
     'http://localhost:5173',
     'http://127.0.0.1:5173',
     'http://localhost:3000',
-    'http://127.0.0.1:3000'
+    'http://127.0.0.1:3000',
+    'http://localhost:5001',
+    'http://127.0.0.1:5001'
   ];
+
+  const allowedOrigins = Array.from(
+    new Set(
+      (env.NODE_ENV === 'production'
+        ? configuredOrigins
+        : [...configuredOrigins, ...devOrigins]
+      ).filter(Boolean)
+    )
+  );
 
   app.use(
     cors({
@@ -43,7 +57,7 @@ export const createApp = () => {
         if (!origin || allowedOrigins.includes(origin)) {
           callback(null, true);
         } else {
-          callback(null, true); // Dev permissive for assessment review
+          callback(new AppError(`CORS policy violation: Origin '${origin}' is not authorized.`, 403));
         }
       },
       credentials: true,

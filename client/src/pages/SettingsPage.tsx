@@ -36,7 +36,7 @@ export const SettingsPage: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6 max-w-4xl mx-auto">
+    <div className="space-y-6 max-w-4xl mx-auto animate-page-enter">
       <div>
         <h1 className="text-xl font-bold tracking-tight text-foreground">Account &amp; Security</h1>
         <p className="text-xs text-muted-foreground mt-0.5">

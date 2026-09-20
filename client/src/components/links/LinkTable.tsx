@@ -89,24 +89,30 @@ export const LinkTable: React.FC<LinkTableProps> = ({
             {isLoading ? (
               Array.from({ length: 5 }).map((_, i) => (
                 <TableRow key={i}>
-                  <TableCell colSpan={5} className="py-6 text-center">
-                    <div className="h-4 bg-muted/50 rounded animate-pulse w-3/4 mx-auto" />
+                  <TableCell colSpan={5} className="py-4 px-4">
+                    <div className="skeleton-shimmer h-5 w-full rounded" />
                   </TableCell>
                 </TableRow>
               ))
             ) : links.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={5} className="py-12 text-center text-muted-foreground">
-                  <Globe className="h-8 w-8 mx-auto mb-2 text-muted-foreground/40" />
-                  <p className="text-sm font-medium text-foreground">No short links found</p>
-                  <p className="text-xs text-muted-foreground mt-0.5">
-                    Create your first short link to start tracking clicks.
+                <TableCell colSpan={5} className="py-14 text-center text-muted-foreground">
+                  <div className="h-10 w-10 rounded-full bg-secondary/50 border border-border/60 mx-auto mb-2 flex items-center justify-center text-muted-foreground/60">
+                    <Globe className="h-5 w-5" />
+                  </div>
+                  <p className="text-xs font-semibold text-foreground">No short links found</p>
+                  <p className="text-[11px] text-muted-foreground mt-0.5">
+                    Create your first short link to start tracking real-time click telemetry.
                   </p>
                 </TableCell>
               </TableRow>
             ) : (
-              links.map((link) => (
-                <TableRow key={link._id} className="group">
+              links.map((link, idx) => (
+                <TableRow
+                  key={link._id}
+                  style={{ animationDelay: `${Math.min(idx * 45, 300)}ms` }}
+                  className="group animate-row-enter transition-colors duration-150"
+                >
                   {/* Destination & Title */}
                   <TableCell className="max-w-[280px]">
                     <div className="flex flex-col">
@@ -117,7 +123,7 @@ export const LinkTable: React.FC<LinkTableProps> = ({
                         href={link.originalUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-[11px] text-muted-foreground truncate hover:text-foreground flex items-center mt-0.5 group-hover:text-zinc-300 transition-colors"
+                        className="text-[11px] text-muted-foreground truncate hover:text-foreground flex items-center mt-0.5 group-hover:text-zinc-300 transition-colors font-mono"
                       >
                         <span className="truncate">{link.originalUrl}</span>
                         <ExternalLink className="h-2.5 w-2.5 ml-1 shrink-0 opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -132,12 +138,12 @@ export const LinkTable: React.FC<LinkTableProps> = ({
                         href={`/r/${link.shortCode}`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="font-mono text-xs font-semibold text-foreground hover:underline"
+                        className="font-mono text-xs font-semibold text-zinc-200 hover:text-white hover:underline underline-offset-2"
                       >
                         /r/{link.shortCode}
                       </a>
                       {link.isCustomSlug && (
-                        <span className="text-[10px] px-1.5 py-0.2 rounded bg-zinc-800 text-zinc-300 font-mono">
+                        <span className="text-[10px] px-1.5 py-0.2 rounded bg-secondary border border-border/50 text-zinc-400 font-mono">
                           custom
                         </span>
                       )}
@@ -146,29 +152,32 @@ export const LinkTable: React.FC<LinkTableProps> = ({
 
                   {/* Click count */}
                   <TableCell className="text-center">
-                    <Badge variant="secondary" className="font-mono text-xs">
+                    <Badge variant="secondary" className="font-mono text-xs bg-secondary/80 border border-border/50">
                       {link.clickCount.toLocaleString()}
                     </Badge>
                   </TableCell>
 
                   {/* Created */}
-                  <TableCell className="text-xs text-muted-foreground whitespace-nowrap">
+                  <TableCell className="text-xs text-muted-foreground whitespace-nowrap font-mono text-[11px]">
                     {formatDate(link.createdAt)}
                   </TableCell>
 
                   {/* Actions */}
                   <TableCell className="text-right">
                     <div className="flex items-center justify-end space-x-1">
-                      {/* Copy */}
+                      {/* Copy with smooth transition */}
                       <Button
                         variant="ghost"
-                        size="icon"
+                        size="sm"
                         onClick={() => handleCopy(link.shortCode, link._id)}
-                        className="h-8 w-8 text-muted-foreground hover:text-foreground"
+                        className="h-8 px-2 text-xs text-muted-foreground hover:text-foreground transition-all duration-150"
                         title="Copy short link"
                       >
                         {copiedId === link._id ? (
-                          <Check className="h-3.5 w-3.5 text-emerald-400" />
+                          <span className="inline-flex items-center text-emerald-400 font-medium animate-in fade-in duration-150 text-[11px]">
+                            <Check className="h-3.5 w-3.5 mr-1" />
+                            Copied
+                          </span>
                         ) : (
                           <Copy className="h-3.5 w-3.5" />
                         )}

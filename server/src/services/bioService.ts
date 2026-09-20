@@ -37,12 +37,20 @@ export class BioService {
     if (input.theme !== undefined) profile.theme = input.theme;
     if (input.socialLinks !== undefined) profile.socialLinks = input.socialLinks;
     if (input.showcaseLinkIds !== undefined) {
-      // Validate that showcase links belong to this user
+      // Validate that showcase links strictly belong to this authenticated user
       const validLinks = await Link.find({
         _id: { $in: input.showcaseLinkIds },
         userId,
         status: 'active'
       }).select('_id');
+
+      if (validLinks.length !== input.showcaseLinkIds.length) {
+        throw new AppError(
+          'Unauthorized: You can only showcase active links that you own.',
+          403
+        );
+      }
+
       profile.showcaseLinkIds = validLinks.map((l) => l._id as any);
     }
 

@@ -57,11 +57,11 @@ export const ClicksChart: React.FC<ClicksChartProps> = ({
               <AreaChart data={formattedData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                 <defs>
                   <linearGradient id="clicksGradient" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#818cf8" stopOpacity={0.3} />
-                    <stop offset="95%" stopColor="#818cf8" stopOpacity={0.0} />
+                    <stop offset="5%" stopColor="#e2e8f0" stopOpacity={0.16} />
+                    <stop offset="95%" stopColor="#e2e8f0" stopOpacity={0.0} />
                   </linearGradient>
                 </defs>
-                <CartesianGrid strokeDasharray="3 3" stroke="#27272a" vertical={false} />
+                <CartesianGrid strokeDasharray="2 2" stroke="#1c2027" vertical={false} />
                 <XAxis
                   dataKey="displayDate"
                   tickLine={false}
@@ -76,13 +76,14 @@ export const ClicksChart: React.FC<ClicksChartProps> = ({
                   tick={{ fill: '#71717a', fontSize: 11 }}
                 />
                 <Tooltip
+                  cursor={{ stroke: '#3f3f46', strokeWidth: 1, strokeDasharray: '3 3' }}
                   content={({ active, payload }) => {
                     if (active && payload && payload.length) {
                       const item = payload[0].payload;
                       return (
-                        <div className="rounded-lg border border-border bg-popover/95 p-2.5 shadow-md backdrop-blur-sm text-xs">
-                          <p className="font-medium text-foreground">{item.rawDate}</p>
-                          <p className="font-mono text-indigo-400 font-semibold mt-0.5">
+                        <div className="rounded-lg border border-border/80 bg-[#0F1216]/95 p-2.5 shadow-xl backdrop-blur-md text-xs transition-all duration-150 ease-out">
+                          <p className="font-medium text-zinc-400 font-mono text-[11px]">{item.rawDate}</p>
+                          <p className="font-mono text-foreground font-semibold mt-1">
                             {item.clicks} {item.clicks === 1 ? 'click' : 'clicks'}
                           </p>
                         </div>
@@ -94,10 +95,19 @@ export const ClicksChart: React.FC<ClicksChartProps> = ({
                 <Area
                   type="monotone"
                   dataKey="clicks"
-                  stroke="#6366f1"
-                  strokeWidth={2}
+                  stroke="#cbd5e1"
+                  strokeWidth={1.75}
                   fillOpacity={1}
                   fill="url(#clicksGradient)"
+                  isAnimationActive={true}
+                  animationDuration={650}
+                  animationEasing="ease-out"
+                  activeDot={{
+                    r: 4,
+                    fill: '#f4f4f5',
+                    stroke: '#18181b',
+                    strokeWidth: 2
+                  }}
                 />
               </AreaChart>
             </ResponsiveContainer>

@@ -3,7 +3,7 @@ import { ClickEvent } from '../models/ClickEvent';
 import { BioProfile } from '../models/BioProfile';
 import { generateShortCode } from '../utils/shortCodeGenerator';
 import { AppError } from '../middleware/errorHandler';
-import { CreateLinkInput, LinkQueryInput } from '../validators/linkValidator';
+import { CreateLinkInput, LinkQueryInput, isSelfReferencingRedirect } from '../validators/linkValidator';
 
 export interface PaginatedLinks {
   links: ILink[];
@@ -40,6 +40,13 @@ export class LinkService {
         attempts++;
       }
       shortCode = candidate;
+    }
+
+    if (isSelfReferencingRedirect(input.originalUrl, shortCode)) {
+      throw new AppError(
+        'Self-referencing redirect loops are not permitted. Original URL cannot point to the /r/ redirect engine.',
+        400
+      );
     }
 
     // Default title from hostname if empty

@@ -16,8 +16,7 @@ const clickEventSchema = new Schema<IClickEvent>(
     linkId: {
       type: Schema.Types.ObjectId,
       ref: 'Link',
-      required: true,
-      index: true
+      required: true
     },
     timestamp: {
       type: Date,
