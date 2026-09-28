@@ -9,6 +9,18 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src')
     }
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'react-vendor': ['react', 'react-dom'],
+          'router': ['react-router-dom'],
+          'charts': ['recharts'],
+          'http': ['axios']
+        }
+      }
+    }
+  },
   server: {
     port: 5173,
     proxy: {
