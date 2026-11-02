@@ -5,6 +5,14 @@
       "destination": "https://branded-link-hub-server.onrender.com/api/v1/:path*"
     },
     {
+      "source": "/r/:path*",
+      "destination": "https://branded-link-hub-server.onrender.com/r/:path*"
+    },
+    {
+      "source": "/health",
+      "destination": "https://branded-link-hub-server.onrender.com/health"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }

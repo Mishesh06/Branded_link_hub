@@ -54,7 +54,12 @@ export const createApp = () => {
     cors({
       origin: (origin, callback) => {
         // allow requests with no origin (like mobile apps, curl, or same-origin redirects)
-        if (!origin || allowedOrigins.includes(origin)) {
+        if (
+          !origin ||
+          allowedOrigins.includes(origin) ||
+          origin.endsWith('.vercel.app') ||
+          origin.includes('vercel.app')
+        ) {
           callback(null, true);
         } else {
           callback(new AppError(`CORS policy violation: Origin '${origin}' is not authorized.`, 403));
