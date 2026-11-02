@@ -12,6 +12,7 @@ import linkRoutes from './routes/linkRoutes';
 import analyticsRoutes from './routes/analyticsRoutes';
 import bioRoutes from './routes/bioRoutes';
 import redirectRoutes from './routes/redirectRoutes';
+import { seedDemoData } from './utils/seedData';
 
 export const createApp = () => {
   const app = express();
@@ -84,6 +85,24 @@ export const createApp = () => {
       timestamp: new Date().toISOString(),
       service: 'branded-link-hub-api'
     });
+  });
+
+  // Seed demo data endpoint
+  app.get('/api/v1/seed-demo', async (_req, res) => {
+    try {
+      const result = await seedDemoData();
+      res.status(200).json({
+        success: true,
+        message: 'Demo data seeded successfully!',
+        data: result
+      });
+    } catch (err: any) {
+      console.error('[Seed Endpoint] Failed:', err);
+      res.status(500).json({
+        success: false,
+        error: err?.message || 'Failed to seed demo data'
+      });
+    }
   });
 
   // Short-link Redirection Engine (Root prefix /r)
